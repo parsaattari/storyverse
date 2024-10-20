@@ -5,6 +5,41 @@ import { useState } from "react";
 
 function Create() {
   const [tags, setTags] = useState<string[]>([]);
+  const handleSubmit = () => {
+    console.log("submit");
+  const [worldName, setWorldName] = useState("");
+  const [genre, setGenre] = useState("");
+  const [subgenre, setSubgenre] = useState("");
+
+  const handleSubmit = async () => {
+    try {
+      const formData = {
+        worldName,
+        genre,
+        subgenre,
+        tags
+      };
+
+      const response = await fetch('https://your-walrus-api-endpoint.com/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const result = await response.json();
+      console.log('Upload successful:', result);
+      // Handle successful upload (e.g., show success message, reset form, etc.)
+    } catch (error) {
+      console.error('Error uploading data:', error);
+      // Handle error (e.g., show error message to user)
+    }
+  };
 
   return (
     <>
@@ -95,7 +130,7 @@ function Create() {
             <TextField {...params} variant="outlined" placeholder="Add Tags" />
           )}
         />
-        <button type="submit" style={{ marginTop: "20px" }}>
+        <button onClick={handleSubmit} type="submit" style={{ marginTop: "20px" }}>
           Create World
         </button>
       </Box>

@@ -17,21 +17,7 @@ function Auth() {
   
     return (
       <>
-        {isLoggedIn ? (
-          <div className="card"><p>You are logged in!</p>
-          <h1>Wallets</h1>
-
-          {userWallets.map((wallet) => (
-            <p key={wallet.id}>
-                Wallet Address: {wallet.address}
-            </p>
-            )) 
-            }
-            <button onClick={signMessage}>Sign Message</button>
-          </div>
-        ) : (
-          <DynamicWidget />
-        )}
+        {!isLoggedIn && <DynamicWidget />}
       </>
     )
 }
