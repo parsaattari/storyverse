@@ -63,7 +63,7 @@ function CreateFanfiction() {
     await createAsset(upload.id);
     
     // After submission, navigate back to the world details page
-    navigate(`/world_details/${id}`);
+    navigate(`/`);
   };
 
   return (

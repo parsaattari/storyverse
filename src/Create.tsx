@@ -12,7 +12,7 @@ function Create() {
   const [genre, setGenre] = useState("");
   const [subgenre, setSubgenre] = useState("");
   const [story, setStory] = useState("");
-  const [ipTerms, setIpTerms] = useState("");
+  const [ipTerms, setIpTerms] = useState<string[]>([]);
   const { createNFTCollection } = useNftClient();
   const { mintAndRegisterIpAssetWithPilTerms } = useIpAsset();
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -141,14 +141,24 @@ function Create() {
             <Select
               labelId="ip-terms-label"
               id="ip-terms"
+              multiple
               value={ipTerms}
               label="IP Terms"
-              onChange={(e) => setIpTerms(e.target.value)}
+              onChange={(e) => setIpTerms(typeof e.target.value === 'string' ? e.target.value.split(',') : e.target.value)}
+              renderValue={(selected) => (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                  {selected.map((value) => (
+                    <Chip key={value} label={value} />
+                  ))}
+                </Box>
+              )}
             >
-              <MenuItem value="">Select IP terms</MenuItem>
-              <MenuItem value="copyright">Copyright</MenuItem>
-              <MenuItem value="creative-commons">Creative Commons</MenuItem>
-              <MenuItem value="public-domain">Public Domain</MenuItem>
+              <MenuItem value="transferable">Transferable</MenuItem>
+              <MenuItem value="commercialUse">Commercial Use</MenuItem>
+              <MenuItem value="commercialAttribution">Commercial Attribution</MenuItem>
+              <MenuItem value="derivativesAllowed">Derivatives Allowed</MenuItem>
+              <MenuItem value="derivativesAttribution">Derivatives Attribution</MenuItem>
+              <MenuItem value="derivativesReciprocal">Derivatives Reciprocal</MenuItem>
             </Select>
           </FormControl>
 

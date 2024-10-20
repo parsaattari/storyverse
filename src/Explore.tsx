@@ -123,44 +123,6 @@ function Explore() {
     (page - 1) * storiesPerPage,
     page * storiesPerPage
   );
-
-  async function createAsset() {
-    const url = 'https://api.storyprotocol.net/api/v1/assets';
-    const headers = {
-      'X-Api-Key': '4CWuPKSRTTxC7WvjPNsaZlAqJmrGL7OhNniUrZawdu8',
-      'X-Chain': 'story-testnet',
-      'accept': 'application/json',
-      'content-type': 'application/json',
-    };
-  
-    const data = {
-      options: {
-        tokenContractIds: [
-          '0x2dce16172aD874b65A991d5f9876911688cf5eFa',
-        ],
-      },
-    };
-  
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(data),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} ${response.statusText}`);
-      }
-  
-      const responseData = await response.json();
-      return responseData;
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  }
-  
-  // Call the function
-  // createAsset();
   
 
   return (
@@ -212,6 +174,13 @@ function Explore() {
             key={pageNum}
             onClick={() => setPage(pageNum)}
             disabled={page === pageNum}
+            style={{
+              backgroundColor: page === pageNum ? "#007bff" : "#ccc",
+              color: "white",
+              border: "none",
+              padding: "5px 10px",
+              cursor: "pointer"
+            }}
           >
             {pageNum}
           </button>
