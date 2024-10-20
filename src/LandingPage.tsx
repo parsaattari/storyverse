@@ -19,7 +19,7 @@ function LandingPage({ initialValue }: { initialValue: string }) {
           <TabPanel value="0">
             <p>Welcome to the StoryVerse!</p>
             <Box sx={{ display: "flex", gap: 2 }}>
-              <button style={{ backgroundColor: "#646cff" }} onClick={() => setValue("1")}>Create</button>
+              <button style={{ backgroundColor: "#646cff", width: "30%" }} onClick={() => setValue("1")}>Create</button>
               <button style={{ backgroundColor: "#646cff" }} onClick={() => setValue("2")}>Explore</button>
               <button style={{ backgroundColor: "#646cff" }} onClick={() => setValue("3")}>Account</button>
             </Box>

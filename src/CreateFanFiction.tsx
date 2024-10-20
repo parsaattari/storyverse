@@ -67,7 +67,7 @@ function CreateFanfiction() {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 600, margin: 'auto', padding: 2 }}>
+    <Box component="form" onSubmit={handleSubmit} sx={{ width: "80%", padding: 2 }}>
       <h2>Create Fanfiction</h2>
       <TextField
         fullWidth

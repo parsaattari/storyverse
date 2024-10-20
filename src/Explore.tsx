@@ -142,6 +142,7 @@ function Explore() {
               width: "30%",
               border: "1px solid #ccc",
               borderRadius: 2,
+              borderColor: "#523e27",
               padding: 2,
               marginBottom: 2,
               cursor: "pointer"

@@ -44,7 +44,7 @@ function WorldDetails({ world } : WorldDetailsProps) {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           width: '80%',
-          maxWidth: 800,
+          maxWidth: 1000,
           bgcolor: 'background.paper',
           boxShadow: 24,
           p: 4,

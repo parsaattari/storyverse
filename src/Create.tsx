@@ -69,7 +69,7 @@ function Create() {
   return (
     <>
       <p>Answer the following questions to create your world:</p>
-      <form onSubmit={handleSubmit}>
+      <form style={{ width: "100%" }} onSubmit={handleSubmit}>
         <Box
           sx={{
             display: "flex",

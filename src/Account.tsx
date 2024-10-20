@@ -4,6 +4,7 @@ import { Autocomplete, Chip, TextField, Switch } from "@mui/material";
 import { useState } from "react";
 
 function Account() {
+  
   const [worlds, setWorlds] = useState([
     {
       name: "Mystic Realm",
@@ -31,7 +32,7 @@ function Account() {
     },
   ]);
 
-  const handleTogglePublic = (index) => {
+  const handleTogglePublic = (index: number) => {
     const newWorlds = [...worlds];
     newWorlds[index].isPublic = !newWorlds[index].isPublic;
     setWorlds(newWorlds);
@@ -44,12 +45,12 @@ function Account() {
         {worlds.map((world, index) => (
           <Box
             key={index}
-            sx={{ border: "1px solid #ccc", borderRadius: 2, padding: 2 }}
+            sx={{ border: "1px solid #ccc", borderRadius: 2, padding: 2, borderColor: "#523e27" }}
           >
             <h2>{world.name}</h2>
             <p>Earnings: {world.earnings}</p>
             <p>Recent Activity: {world.recentActivity}</p>
-            <Box sx={{ display: "flex", flexDirection: "flex-column-star", gap: 1 }}>
+            <Box sx={{ display: "flex", flexDirection: "flex-column-start", gap: 1 }}>
               <h3>Derivative Works:</h3>
               <ul>
                 {world.derivativeWorks.map((work, i) => (
@@ -79,7 +80,7 @@ function Account() {
                   style={{
                     marginLeft: "10px",
                     backgroundColor: "red",
-                    color: "white",
+                    // color: "white",
                   }}
                 >
                   Delete World

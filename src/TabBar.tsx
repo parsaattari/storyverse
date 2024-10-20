@@ -13,7 +13,7 @@ function TabBar({value, setValue}: {value: string, setValue: (newValue: string) 
 
   return (
     <>
-      <Box sx={{ width: '100%', position: 'fixed', left:0, top: 0, zIndex: 1, gap: '10rem', backgroundColor: 'white' }}>
+      <Box sx={{ width: '100%', position: 'fixed', left:0, top: 0, zIndex: 1, gap: '10rem'}}>
         <TabContext value={value}>
           <Box sx={{ borderBottom: 10, borderColor: 'divider', alignSelf: 'center' }}>
             <TabList  onChange={handleChange} aria-label="lab API tabs example">
