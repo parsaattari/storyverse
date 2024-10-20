@@ -18,6 +18,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector';
 import { StoryProvider } from "@story-protocol/react-sdk";
 import { useWalletClient } from "wagmi";
+import LandingPage from './LandingPage';
 
 export const iliad = {
   id: 1513, // Your custom chain ID
@@ -82,7 +83,7 @@ function App() {
           <DynamicWagmiConnector>
             <StoryProviderWrapper>
               <Auth />
-              <License />
+              <LandingPage initialValue="0" />
             </StoryProviderWrapper>
           </DynamicWagmiConnector>
         </QueryClientProvider>
