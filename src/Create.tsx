@@ -38,7 +38,8 @@ function Create() {
 
       console.log('Upload successful:', upload);
       
-
+      console.log("ipMetadataURI: ", upload.id)
+      console.log("ipMetadataHash: ", toHex(upload.id.slice(0, 32), { size: 32 }))
       const response = await mintAndRegisterIpAssetWithPilTerms({
           // an NFT contract address created by the SPG
           nftContract: "0x2dce16172ad874b65a991d5f9876911688cf5efa" as Address,
@@ -46,7 +47,9 @@ function Create() {
           // https://docs.story.foundation/docs/ipa-metadata-standard
           ipMetadata: {
             ipMetadataURI: upload.id,
-            ipMetadataHash: toHex(upload.id.slice(0, 32), { size: 32 })
+            ipMetadataHash: toHex(upload.id.slice(0, 32), { size: 32 }),
+            nftMetadataURI: upload.id,
+            nftMetadataHash: toHex(upload.id.slice(0, 32), { size: 32 })
           },
           txOptions: { waitForTransaction: true }
         });
