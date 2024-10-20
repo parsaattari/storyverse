@@ -18,8 +18,45 @@ type World = {
 function Explore() {
   const [page, setPage] = useState(1);
   const storiesPerPage = 4;
-  const collection_address = "0x2dce16172ad874b65a991d5f9876911688cf5efa";
-  const [stories, setStories] = useState<World[]>([]);
+  // const collection_address = "0x2dce16172ad874b65a991d5f9876911688cf5efa";
+  const [stories, setStories] = useState<World[]>([
+    {
+      WorldName: "Ethereal Realms",
+      Story: "A world where magic and technology coexist, creating a unique blend of fantasy and science fiction.",
+      Genre: "Fantasy",
+      SubGenre: "Science Fantasy",
+      IPTerms: "Creative Commons",
+      Tags: ["magic", "technology", "adventure"],
+      id: "1"
+    },
+    {
+      WorldName: "Neon Nights",
+      Story: "A cyberpunk metropolis where hackers and corporations battle for control in the digital underworld.",
+      Genre: "Science Fiction",
+      SubGenre: "Cyberpunk",
+      IPTerms: "All Rights Reserved",
+      Tags: ["cyberpunk", "hacking", "dystopia"],
+      id: "2"
+    },
+    {
+      WorldName: "Whispering Woods",
+      Story: "An enchanted forest filled with mythical creatures and ancient secrets waiting to be discovered.",
+      Genre: "Fantasy",
+      SubGenre: "Fairy Tale",
+      IPTerms: "Creative Commons",
+      Tags: ["forest", "magic", "creatures"],
+      id: "3"
+    },
+    {
+      WorldName: "Starfall Station",
+      Story: "A space station at the edge of the galaxy, where different alien species come together for trade and diplomacy.",
+      Genre: "Science Fiction",
+      SubGenre: "Space Opera",
+      IPTerms: "Open Source",
+      Tags: ["space", "aliens", "politics"],
+      id: "4"
+    }
+  ]);
 
   useEffect(() => {
     const fetchAssets = async () => {
@@ -45,7 +82,6 @@ function Explore() {
           headers: headers,
           body: JSON.stringify(data),
         });
-        console.log('Response1:', response);
     
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -71,7 +107,9 @@ function Explore() {
           };
         }));
 
-        setStories(fetchedStories);
+        if (fetchedStories) {
+          setStories(fetchedStories);
+        }
       } catch (error) {
         console.error('Error fetching assets:', error);
       }
@@ -115,7 +153,6 @@ function Explore() {
       }
   
       const responseData = await response.json();
-      console.log('Response2:', responseData);
       return responseData;
     } catch (error) {
       console.error('Error:', error);
@@ -123,7 +160,7 @@ function Explore() {
   }
   
   // Call the function
-  createAsset();
+  // createAsset();
   
 
   return (
