@@ -7,7 +7,7 @@ function CreateFanfiction() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Here you would typically send the story to your backend
     console.log('Submitting story:', story);

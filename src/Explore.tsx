@@ -19,7 +19,7 @@ function Explore() {
   const [page, setPage] = useState(1);
   const storiesPerPage = 4;
   // const collection_address = "0x2dce16172ad874b65a991d5f9876911688cf5efa";
-  const [stories, setStories] = useState<World[]>([
+  const [stories, _] = useState<World[]>([
     {
       WorldName: "Ethereal Realms",
       Story: "In a world where magic and technology coexist...",
@@ -153,19 +153,6 @@ function Explore() {
         {displayStories.map((story: World, index: number) => (
           <Box
             key={index}
-            onClick={() => {
-              const worldDetails: Omit<World, 'Tags'> & { tags: string } = {
-                WorldName: story.WorldName,
-                Story: story.Story,
-                Genre: story.Genre,
-                SubGenre: story.SubGenre,
-                IPTerms: story.IPTerms,
-                tags: story.Tags.join(','),
-                id: story.id,
-              };
-              const params = new URLSearchParams(worldDetails);
-              window.location.href = `/world_details?${params.toString()}`;
-            }}
             sx={{
               width: "30%",
               border: "1px solid #ccc",

@@ -60,7 +60,7 @@ function WorldDetails({ world } : WorldDetailsProps) {
           <Typography><strong>IP Terms:</strong> {ipTerms}</Typography>
           <Box sx={{ mt: 2, mb: 2 }}>
             <Typography component="span"><strong>Tags:</strong></Typography>
-            {tags?.split(',').map((tag, index) => (
+            {tags?.map((tag, index: number) => (
               <Chip key={index} label={tag} sx={{ ml: 1 }} />
             ))}
           </Box>
