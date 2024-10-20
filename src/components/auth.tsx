@@ -2,7 +2,7 @@
 import { useIsLoggedIn, useUserWallets, useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { DynamicWidget } from '@dynamic-labs/sdk-react-core';
 
-function Test() {
+function Auth() {
     const isLoggedIn = useIsLoggedIn();
     const userWallets = useUserWallets()
     const { primaryWallet } = useDynamicContext();
@@ -36,5 +36,5 @@ function Test() {
     )
 }
 
-export default Test;
+export default Auth;
 
