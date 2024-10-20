@@ -17,11 +17,11 @@ function LandingPage({ initialValue }: { initialValue: string }) {
       <Box sx={{ marginTop: "4rem" }}>
         <TabContext value={value}>
           <TabPanel value="0">
-            <p>Welcome to the StoryVerse!</p>
+            <h1>Welcome to the StoryVerse!</h1>
             <Box sx={{ display: "flex", gap: 2 }}>
-              <button style={{ backgroundColor: "#646cff", width: "30%" }} onClick={() => setValue("1")}>Create</button>
-              <button style={{ backgroundColor: "#646cff" }} onClick={() => setValue("2")}>Explore</button>
-              <button style={{ backgroundColor: "#646cff" }} onClick={() => setValue("3")}>Account</button>
+              <button style={{ backgroundColor: "#646cff", width: "33%" }} onClick={() => setValue("1")}>Create</button>
+              <button style={{ backgroundColor: "#646cff", width: "33%" }} onClick={() => setValue("2")}>Explore</button>
+              <button style={{ backgroundColor: "#646cff", width: "33%" }} onClick={() => setValue("3")}>Account</button>
             </Box>
           </TabPanel>
           <TabPanel value="1">
