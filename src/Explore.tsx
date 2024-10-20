@@ -2,7 +2,6 @@ import "./App.css";
 import Box from "@mui/material/Box";
 import { Autocomplete, Chip, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import { StoryClient, StoryConfig } from "@story-protocol/core-sdk";
 
 
 
@@ -10,43 +9,80 @@ function Explore() {
   const [page, setPage] = useState(1);
   const storiesPerPage = 4;
   const collection_address = "0x2dce16172ad874b65a991d5f9876911688cf5efa";
-  const [stories, setStories] = useState([]);
-
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchStories = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await fetch(`https://api.storyprotocol.net/api/v1/assets?collection=${collection_address}`);
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        // Assuming the API returns an array of assets
-        setStories(data.assets.map((asset: any) => ({
-          WorldName: asset.name,
-          Story: asset.description,
-          Genre: asset.attributes.find((attr: { trait_type: string; value: string }) => attr.trait_type === 'Genre')?.value || 'Unknown',
-          SubGenre: asset.attributes.find((attr: { trait_type: string; value: string }) => attr.trait_type === 'SubGenre')?.value || 'Unknown',
-          IPTerms: asset.attributes.find((attr: { trait_type: string; value: string }) => attr.trait_type === 'IPTerms')?.value || 'Unknown',
-          Tags: asset.attributes.find((attr: { trait_type: string; value: string }) => attr.trait_type === 'Tags')?.value.split(',') || []
-        })));
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchStories();
-  }, [collection_address]);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  const [stories, setStories] = useState([
+    {
+      WorldName: "Ethereal Realms",
+      Story: "In a world where magic and technology coexist...",
+      Genre: "Fantasy",
+      SubGenre: "Sci-Fi",
+      IPTerms: "Creative Commons",
+      Tags: ["magic", "technology", "adventure"],
+      id: "1"
+    },
+    {
+      WorldName: "Neon Nights",
+      Story: "In the sprawling cyberpunk metropolis of Neo Tokyo...",
+      Genre: "Science Fiction",
+      SubGenre: "Cyberpunk",
+      IPTerms: "All Rights Reserved",
+      Tags: ["cyberpunk", "dystopia", "AI"],
+      id: "2"
+    },
+    {
+      WorldName: "Whispers of the Past",
+      Story: "An ancient artifact resurfaces, bringing with it long-forgotten secrets...",
+      Genre: "Historical Fiction",
+      SubGenre: "Mystery",
+      IPTerms: "Open Source",
+      Tags: ["archaeology", "mystery", "ancient civilizations"],
+      id: "3"
+    },
+    {
+      WorldName: "Starborn Legacy",
+      Story: "As humanity reaches for the stars, they discover they're not alone...",
+      Genre: "Science Fiction",
+      SubGenre: "Space Opera",
+      IPTerms: "Creative Commons",
+      Tags: ["space", "aliens", "exploration"],
+      id: "4"
+    },
+    {
+      WorldName: "Shadows of Eldritch",
+      Story: "In a small coastal town, cosmic horrors lurk beneath the surface...",
+      Genre: "Horror",
+      SubGenre: "Cosmic Horror",
+      IPTerms: "All Rights Reserved",
+      Tags: ["lovecraftian", "mystery", "supernatural"],
+      id: "5"
+    },
+    {
+      WorldName: "Clockwork Kingdom",
+      Story: "In a world powered by steam and gears, a revolution is brewing...",
+      Genre: "Steampunk",
+      SubGenre: "Alternative History",
+      IPTerms: "Open Source",
+      Tags: ["steampunk", "revolution", "inventions"],
+      id: "6"
+    },
+    {
+      WorldName: "Verdant Apocalypse",
+      Story: "Nature reclaims the Earth, and humanity must adapt or perish...",
+      Genre: "Post-Apocalyptic",
+      SubGenre: "Eco-Fiction",
+      IPTerms: "Creative Commons",
+      Tags: ["nature", "survival", "rebirth"],
+      id: "7"
+    },
+    {
+      WorldName: "Quantum Flux",
+      Story: "Reality itself becomes unstable as quantum anomalies spread...",
+      Genre: "Science Fiction",
+      SubGenre: "Quantum Fiction",
+      IPTerms: "All Rights Reserved",
+      Tags: ["quantum physics", "reality-bending", "multiverse"],
+      id: "8"
+    }
+  ]);
 
 
   const displayStories = stories.slice(
@@ -67,12 +103,25 @@ function Explore() {
         {displayStories.map((story, index) => (
           <Box
             key={index}
+            onClick={() => {
+              const worldDetails = {
+                worldName: story.WorldName,
+                story: story.Story,
+                genre: story.Genre,
+                subgenre: story.SubGenre,
+                ipTerms: story.IPTerms,
+                tags: story.Tags,
+                id: story.id,
+              };
+              window.location.href = `/world_details/${encodeURIComponent(JSON.stringify(worldDetails))}`;
+            }}
             sx={{
               width: "30%",
               border: "1px solid #ccc",
               borderRadius: 2,
               padding: 2,
               marginBottom: 2,
+              cursor: "pointer"
             }}
           >
             <h3>{story.WorldName}</h3>
