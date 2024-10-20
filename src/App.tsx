@@ -82,7 +82,6 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <DynamicWagmiConnector>
             <StoryProviderWrapper>
-              <Auth />
               <LandingPage initialValue="0" />
             </StoryProviderWrapper>
           </DynamicWagmiConnector>
@@ -101,19 +100,15 @@ function StoryProviderWrapper({ children }: PropsWithChildren) {
 
   useEffect(() => {
     // Wait for the wallet to be resolved and prevent re-renders
-    if (!isWalletLoading && isInitializing) {
       console.log("Wallet Account: ", wallet?.account);
       if (wallet?.account) {
         setLoadedWallet(wallet);
       } 
-
-      setIsInitializing(false);
-    }
   }, [wallet, isWalletLoading, isInitializing]);
 
   // Wait for the wallet initialization to complete before rendering StoryProvider
-  if (isInitializing) {
-    return <div>Loading...</div>;
+  if (isInitializing || !loadedWallet) {
+    return <Auth isWalletLoading={isWalletLoading} setIsInitializing={setIsInitializing} />;
   }
   console.log("loadedWallet: ", loadedWallet);
   return (

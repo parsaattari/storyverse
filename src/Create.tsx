@@ -38,16 +38,10 @@ function Create() {
 
       console.log('Upload successful:', upload);
       
-      // Function to register the IP asset
-      const newCollection = await createNFTCollection({ 
-          name: 'No-KAPP Test NFT', 
-          symbol: 'KAPP', 
-          txOptions: { waitForTransaction: true } 
-      });
 
       const response = await mintAndRegisterIpAssetWithPilTerms({
           // an NFT contract address created by the SPG
-          nftContract: newCollection.nftContract as Address,
+          nftContract: "0x2dce16172ad874b65a991d5f9876911688cf5efa" as Address,
           pilType: PIL_TYPE.NON_COMMERCIAL_REMIX,
           // https://docs.story.foundation/docs/ipa-metadata-standard
           ipMetadata: {
