@@ -49,11 +49,11 @@ function Account() {
             <h2>{world.name}</h2>
             <p>Earnings: {world.earnings}</p>
             <p>Recent Activity: {world.recentActivity}</p>
-            <Box>
+            <Box sx={{ display: "flex", flexDirection: "flex-column-star", gap: 1 }}>
               <h3>Derivative Works:</h3>
               <ul>
                 {world.derivativeWorks.map((work, i) => (
-                  <li key={i}>{work}</li>
+                  <p key={i}>{work}</p>
                 ))}
               </ul>
             </Box>
@@ -67,13 +67,6 @@ function Account() {
             >
               <Box>
                 <p>Current License: {world.license}</p>
-                <select defaultValue={world.license}>
-                  <option value="Creative Commons">Creative Commons</option>
-                  <option value="All Rights Reserved">
-                    All Rights Reserved
-                  </option>
-                </select>
-                <button>Modify License</button>
               </Box>
               <Box>
                 <Switch

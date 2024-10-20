@@ -18,81 +18,67 @@ type World = {
 function Explore() {
   const [page, setPage] = useState(1);
   const storiesPerPage = 4;
-  // const collection_address = "0x2dce16172ad874b65a991d5f9876911688cf5efa";
-  const [stories, _] = useState<World[]>([
-    {
-      WorldName: "Ethereal Realms",
-      Story: "In a world where magic and technology coexist...",
-      Genre: "Fantasy",
-      SubGenre: "Sci-Fi",
-      IPTerms: "Creative Commons",
-      Tags: ["magic", "technology", "adventure"],
-      id: "1"
-    },
-    {
-      WorldName: "Neon Nights",
-      Story: "In the sprawling cyberpunk metropolis of Neo Tokyo...",
-      Genre: "Science Fiction",
-      SubGenre: "Cyberpunk",
-      IPTerms: "All Rights Reserved",
-      Tags: ["cyberpunk", "dystopia", "AI"],
-      id: "2"
-    },
-    {
-      WorldName: "Whispers of the Past",
-      Story: "An ancient artifact resurfaces, bringing with it long-forgotten secrets...",
-      Genre: "Historical Fiction",
-      SubGenre: "Mystery",
-      IPTerms: "Open Source",
-      Tags: ["archaeology", "mystery", "ancient civilizations"],
-      id: "3"
-    },
-    {
-      WorldName: "Starborn Legacy",
-      Story: "As humanity reaches for the stars, they discover they're not alone...",
-      Genre: "Science Fiction",
-      SubGenre: "Space Opera",
-      IPTerms: "Creative Commons",
-      Tags: ["space", "aliens", "exploration"],
-      id: "4"
-    },
-    {
-      WorldName: "Shadows of Eldritch",
-      Story: "In a small coastal town, cosmic horrors lurk beneath the surface...",
-      Genre: "Horror",
-      SubGenre: "Cosmic Horror",
-      IPTerms: "All Rights Reserved",
-      Tags: ["lovecraftian", "mystery", "supernatural"],
-      id: "5"
-    },
-    {
-      WorldName: "Clockwork Kingdom",
-      Story: "In a world powered by steam and gears, a revolution is brewing...",
-      Genre: "Steampunk",
-      SubGenre: "Alternative History",
-      IPTerms: "Open Source",
-      Tags: ["steampunk", "revolution", "inventions"],
-      id: "6"
-    },
-    {
-      WorldName: "Verdant Apocalypse",
-      Story: "Nature reclaims the Earth, and humanity must adapt or perish...",
-      Genre: "Post-Apocalyptic",
-      SubGenre: "Eco-Fiction",
-      IPTerms: "Creative Commons",
-      Tags: ["nature", "survival", "rebirth"],
-      id: "7"
-    },
-    {
-      WorldName: "Quantum Flux",
-      Story: "Reality itself becomes unstable as quantum anomalies spread...",
-      Genre: "Science Fiction",
-      SubGenre: "Quantum Fiction",
-      IPTerms: "All Rights Reserved",
-      Tags: ["quantum physics", "reality-bending", "multiverse"],
-      id: "8"
-    }
-  ]);
+  const collection_address = "0x2dce16172ad874b65a991d5f9876911688cf5efa";
+  const [stories, setStories] = useState<World[]>([]);
+
+  useEffect(() => {
+    const fetchAssets = async () => {
+      const url = 'https://api.storyprotocol.net/api/v1/assets';
+      const headers = {
+        'accept': 'application/json',
+        'content-type': 'application/json',
+      };
+    
+      const data = {
+        options: {
+          // collectionAddresses: [collection_address],
+          pagination: {
+            limit: 100,  // Adjust as needed
+            offset: 0
+          }
+        }
+      };
+    
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(data),
+        });
+        console.log('Response1:', response);
+    
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+    
+        const responseData = await response.json();
+        console.log('Response:', responseData);
+
+        const fetchedStories: World[] = await Promise.all(responseData.data.map(async (asset: any) => {
+          const tokenUri = asset.nftMetadata.tokenUri;
+          console.log('Token URI:', tokenUri);
+          const metadataResponse = await fetch(`https://gateway.pinata.cloud/ipfs/${tokenUri}`);
+          const metadata = await metadataResponse.json();
+
+          return {
+            WorldName: metadata.name || "Unnamed World",
+            Story: metadata.description || "No description available",
+            Genre: metadata.attributes?.find((attr: any) => attr.trait_type === "Genre")?.value || "Unknown",
+            SubGenre: metadata.attributes?.find((attr: any) => attr.trait_type === "SubGenre")?.value || "Unknown",
+            IPTerms: metadata.attributes?.find((attr: any) => attr.trait_type === "IPTerms")?.value || "Unknown",
+            Tags: metadata.attributes?.filter((attr: any) => attr.trait_type === "Tag").map((tag: any) => tag.value) || [],
+            id: asset.id.toString()
+          };
+        }));
+
+        setStories(fetchedStories);
+      } catch (error) {
+        console.error('Error fetching assets:', error);
+      }
+    };
+
+    fetchAssets();
+  }, []);
 
 
   const displayStories: World[] = stories.slice(
@@ -129,7 +115,7 @@ function Explore() {
       }
   
       const responseData = await response.json();
-      console.log('Response:', responseData);
+      console.log('Response2:', responseData);
       return responseData;
     } catch (error) {
       console.error('Error:', error);
