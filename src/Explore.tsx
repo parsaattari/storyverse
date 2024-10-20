@@ -2,14 +2,24 @@ import "./App.css";
 import Box from "@mui/material/Box";
 import { Autocomplete, Chip, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
+import WorldDetails from "./WorldDetails";
 
 
+type World = {
+  WorldName: string;
+  Story: string;
+  Genre: string;
+  SubGenre: string;
+  IPTerms: string;
+  Tags: string[];
+  id: string;
+};
 
 function Explore() {
   const [page, setPage] = useState(1);
   const storiesPerPage = 4;
-  const collection_address = "0x2dce16172ad874b65a991d5f9876911688cf5efa";
-  const [stories, setStories] = useState([
+  // const collection_address = "0x2dce16172ad874b65a991d5f9876911688cf5efa";
+  const [stories, setStories] = useState<World[]>([
     {
       WorldName: "Ethereal Realms",
       Story: "In a world where magic and technology coexist...",
@@ -85,7 +95,7 @@ function Explore() {
   ]);
 
 
-  const displayStories = stories.slice(
+  const displayStories: World[] = stories.slice(
     (page - 1) * storiesPerPage,
     page * storiesPerPage
   );
@@ -140,20 +150,21 @@ function Explore() {
           justifyContent: "center",
         }}
       >
-        {displayStories.map((story, index) => (
+        {displayStories.map((story: World, index: number) => (
           <Box
             key={index}
             onClick={() => {
-              const worldDetails = {
-                worldName: story.WorldName,
-                story: story.Story,
-                genre: story.Genre,
-                subgenre: story.SubGenre,
-                ipTerms: story.IPTerms,
-                tags: story.Tags,
+              const worldDetails: Omit<World, 'Tags'> & { tags: string } = {
+                WorldName: story.WorldName,
+                Story: story.Story,
+                Genre: story.Genre,
+                SubGenre: story.SubGenre,
+                IPTerms: story.IPTerms,
+                tags: story.Tags.join(','),
                 id: story.id,
               };
-              window.location.href = `/world_details/${encodeURIComponent(JSON.stringify(worldDetails))}`;
+              const params = new URLSearchParams(worldDetails);
+              window.location.href = `/world_details?${params.toString()}`;
             }}
             sx={{
               width: "30%",
@@ -173,10 +184,12 @@ function Explore() {
               <strong>IP Terms:</strong> {story.IPTerms}
             </p>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-              {story.Tags.map((tag, tagIndex) => (
+              {story.Tags.map((tag: string, tagIndex: number) => (
                 <Chip key={tagIndex} label={tag} size="small" />
               ))}
             </Box>
+            <WorldDetails world={story} />
+
           </Box>
         ))}
       </Box>
@@ -184,7 +197,7 @@ function Explore() {
         {Array.from(
           { length: Math.ceil(stories.length / storiesPerPage) },
           (_, i) => i + 1
-        ).map((pageNum) => (
+        ).map((pageNum: number) => (
           <button
             key={pageNum}
             onClick={() => setPage(pageNum)}
