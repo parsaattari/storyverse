@@ -1,31 +1,42 @@
-import React, { useEffect } from 'react';
-import { toHex } from 'viem';
-import { useIpAsset, StoryProvider } from '@story-protocol/react-sdk';
+import  { useEffect } from 'react';
+import { toHex, Address } from 'viem';
+import { useIpAsset, StoryProvider, useNftClient, PIL_TYPE } from '@story-protocol/react-sdk';
 import { useWalletClient } from 'wagmi';
 
 function License() {
-  const { register } = useIpAsset();
+  const { createNFTCollection } = useNftClient();
+  const { mintAndRegisterIpAssetWithPilTerms } = useIpAsset();
   const { data: wallet } = useWalletClient();
-  console.log("StoryProvider: ", StoryProvider);
-  console.log("Wallet: ", wallet);
+
   // Function to register the IP asset
   const registerIPA = async () => {
     try {
-      const response = await register({
-        nftContract: '0xd516482bef63Ff19Ed40E4C6C2e626ccE04e19ED', // your NFT contract address
-        tokenId: '12', // your NFT token ID
-        ipMetadata: {
-          ipMetadataURI: 'test-uri',
-          ipMetadataHash: toHex('test-metadata-hash', { size: 32 }),
-          nftMetadataHash: toHex('test-nft-metadata-hash', { size: 32 }),
-          nftMetadataURI: 'test-nft-uri',
-        },
-        txOptions: { waitForTransaction: true },
-      });
-      
-      console.log(
-        `Root IPA created at tx hash ${response.txHash}, IPA ID: ${response.ipId}`
-      );
+        const newCollection = await createNFTCollection({ 
+            name: 'No-KAPP Test NFT', 
+            symbol: 'KAPP', 
+            txOptions: { waitForTransaction: true } 
+        });
+
+        const response = await mintAndRegisterIpAssetWithPilTerms({
+            // an NFT contract address created by the SPG
+            nftContract: newCollection.nftContract as Address,
+            pilType: PIL_TYPE.NON_COMMERCIAL_REMIX,
+            // https://docs.story.foundation/docs/ipa-metadata-standard
+            ipMetadata: {
+              ipMetadataURI: 'test-uri',
+              ipMetadataHash: toHex('test-metadata-hash', { size: 32 }),
+              nftMetadataHash: toHex('test-nft-metadata-hash', { size: 32 }),
+              nftMetadataURI: 'test-nft-uri',
+            },
+            txOptions: { waitForTransaction: true }
+          });
+          
+          console.log(`
+            Completed at transaction hash ${response.txHash},
+            NFT Token ID: ${response.tokenId}, 
+            IPA ID: ${response.ipId}, 
+            License Terms ID: ${response.licenseTermsId}
+          `);
     } catch (error) {
       console.error('Error registering IPA:', error);
     }
